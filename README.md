@@ -1,121 +1,131 @@
-# Documentação do  IndieSoundHub
+**Documentação do Projeto IndieSoundHub**
 
-## Visão Geral
-
-Bem-vindo ao Projeto de Distribuição de Música! Esta documentação fornece um guia abrangente para usuários técnicos e não técnicos. Se você é um artista independente, um ouvinte ou alguém interessado em entender o projeto, esta documentação está aqui para ajudar.
+---
 
 ## Índice
 
-- [Introdução ao Projeto](#introdução-ao-projeto)
-- [Estrutura do Banco de Dados](#estrutura-do-banco-de-dados)
-  - [Tabelas](#tabelas)
-  - [Dados Fictícios](#dados-fictícios)
-- [Exemplos de Consultas](#exemplos-de-consultas)
-- [Guia de Uso](#guia-de-uso)
-  - [Para Artistas](#para-artistas)
-  - [Para Ouvintes](#para-ouvintes)
-- [Próximos Passos](#próximos-passos)
-- [Contribuições](#contribuições)
+1. [Introdução](#introdução)
+2. [Modelo de Dados](#modelo-de-dados)
+    1. [Tabelas](#tabelas)
+    2. [Relacionamentos](#relacionamentos)
+3. [Instruções SQL](#instruções-sql)
+4. [Consultas](#consultas)
+    1. [Número de Streams por Música](#número-de-streams-por-música)
+    2. [Receita Total por Serviço de Streaming](#receita-total-por-serviço-de-streaming)
+    3. [Histórico de Streaming por Usuário](#histórico-de-streaming-por-usuário)
+    4. [Duração Média de Reprodução por Usuário](#duração-média-de-reprodução-por-usuário)
+    5. [Número de Contratos Ativos por Artista](#número-de-contratos-ativos-por-artista)
 
-## Introdução ao Projeto
+---
 
-O  IndieSoundHub tem como objetivo capacitar artistas independentes, proporcionando uma plataforma para compartilhar e distribuir suas músicas. Também oferece aos ouvintes um local para descobrir e apreciar conteúdo musical diversificado. Esta documentação abrange a estrutura do banco de dados, dados de exemplo, consultas de exemplo e guias do usuário.
+## 1. Introdução
 
-## Estrutura do Banco de Dados
+O projeto IndieSoundHub é uma plataforma dedicada à distribuição de música e gestão de direitos autorais para artistas independentes. O banco de dados foi desenvolvido para armazenar informações sobre artistas, contratos de direitos autorais, músicas, álbuns, serviços de streaming e histórico de reprodução.
 
-### Tabelas
+---
 
-1. **`user`**: Armazena informações do usuário, incluindo artistas e ouvintes.
-2. **`artist`**: Detalhes sobre artistas, vinculados à tabela `user`.
-3. **`contract`**: Contratos entre artistas e detentores de direitos autorais.
-4. **`copyright_holder`**: Informações sobre detentores de direitos autorais.
-5. **`copyright_information`**: Associação entre músicas e detentores de direitos autorais.
-6. **`music`**: Informações sobre músicas, vinculadas a álbuns.
-7. **`album`**: Detalhes sobre álbuns, vinculados a artistas.
-8. **`streaming_history`**: Histórico de reprodução do usuário.
-9. **`streaming_service`**: Informações sobre serviços de streaming.
-10. **`revenue_distribution`**: Distribuição de receitas associadas a músicas e serviços de streaming.
+## 2. Modelo de Dados
 
-### Dados Fictícios
+### 2.1 Tabelas
 
-Dados de exemplo foram inseridos para ilustrar como o sistema funciona. Essas entradas fictícias incluem usuários, artistas, contratos, detentores de direitos autorais, músicas, álbuns, histórico de streaming, serviços de streaming e distribuição de receitas.
+O banco de dados `IndieSoundHub` possui as seguintes tabelas:
 
-## Exemplos de Consultas
+- `album`
+- `user`
+- `artist`
+- `copyright_holder`
+- `contract`
+- `music`
+- `copyright_information`
+- `streaming_service`
+- `revenue_distribution`
+- `streaming_history`
+- `album_music`
+- `music_artist`
 
-1. **[Consulta: Informações do Artista e Contrato](#consulta-informações-do-artista-e-contrato)**
-2. **[Consulta: Músicas e Informações de Direitos Autorais](#consulta-músicas-e-informações-de-direitos-autorais)**
-3. **[Consulta: Histórico de Reprodução e Músicas](#consulta-histórico-de-reprodução-e-músicas)**
-4. **[Consulta: Receita por Serviço de Streaming](#consulta-receita-por-serviço-de-streaming)**
+### 2.2 Relacionamentos
 
-### Consulta: Informações do Artista e Contrato
+As relações entre as tabelas são estabelecidas por meio de chaves estrangeiras (`FOREIGN KEY`). Destacam-se os seguintes relacionamentos:
+
+- `artist` se relaciona com `user` por meio da chave estrangeira (`id`).
+- `contract` possui chaves estrangeiras para `artist` e `copyright_holder`.
+- `copyright_information` relaciona `music` e `copyright_holder`.
+- `revenue_distribution` possui chaves estrangeiras para `music` e `streaming_service`.
+- `streaming_history` está vinculada a `user` e `music`.
+- `album_music` e `music_artist` são tabelas de associação para relacionamentos muitos-para-muitos.
+
+---
+
+## 3. Instruções SQL
+
+O script SQL inicia criando o banco de dados `IndieSoundHub` e definindo suas tabelas. Em seguida, são inseridos dados nas tabelas para simular informações de usuários, artistas, contratos, músicas, álbuns, serviços de streaming e histórico de reprodução.
+
+---
+
+## 4. Consultas
+
+### 4.1 Número de Streams por Música
+
+A consulta retorna o número de streams para cada música na plataforma.
 
 ```sql
-SELECT * FROM artist
-JOIN contract ON artist.id = contract.artist_id
-WHERE artist.id = 1;
-```
-
-Esta consulta recupera informações sobre um artista específico e seu contrato.
-
-### Consulta: Músicas e Informações de Direitos Autorais
-
-```sql
-SELECT music.title, copyright_holder.name, copyright_information.percentage
+SELECT music.title, COUNT(streaming_history.id) AS number_of_streams
 FROM music
-JOIN copyright_information ON music.id = copyright_information.music_id
-JOIN copyright_holder ON copyright_information.copyright_holder_id = copyright_holder.id
-WHERE music.album_id = 2;
+LEFT JOIN streaming_history ON music.id = streaming_history.music_id
+GROUP BY music.title;
 ```
 
-Esta consulta obtém detalhes sobre músicas, incluindo informações sobre detentores de direitos autorais, de um álbum específico.
+### 4.2 Receita Total por Serviço de Streaming
 
-### Consulta: Histórico de Reprodução e Músicas
-
-```sql
-SELECT streaming_history.timestamp, music.title, album.title AS album_title
-FROM streaming_history
-JOIN music ON streaming_history.music_id = music.id
-JOIN album ON music.album_id = album.id
-WHERE streaming_history.user_id = 3;
-```
-
-Esta consulta fornece um histórico de reprodução para um usuário específico, incluindo títulos de músicas e nomes de álbuns.
-
-### Consulta: Receita por Serviço de Streaming
+A consulta calcula a receita total gerada por cada serviço de streaming.
 
 ```sql
-SELECT streaming_service.service_name, revenue_distribution.revenue_share_percentage
+SELECT streaming_service.service_name, SUM(revenue_distribution.revenue_share_percentage * streaming_service.subscribe_fee) AS total_revenue
 FROM streaming_service
-JOIN revenue_distribution ON streaming_service.id = revenue_distribution.streaming_service_id
-WHERE streaming_service.id = 1;
+LEFT JOIN revenue_distribution ON streaming_service.id = revenue_distribution.streaming_service_id
+GROUP BY streaming_service.service_name;
 ```
 
-Esta consulta mostra percentagens de distribuição de receitas para um serviço de streaming específico.
+### 4.3 Histórico de Streaming por Usuário
 
-## Guia de Uso
+A consulta exibe o histórico de streaming, incluindo o usuário, a música e o timestamp.
 
-### Para Artistas
+```sql
+SELECT user.username, music.title AS music_title, streaming_history.timestamp
+FROM user
+JOIN streaming_history ON user.id = streaming_history.user_id
+JOIN music ON streaming_history.music_id = music.id;
+```
 
-Como artista na plataforma, você pode:
-- Carregar e gerenciar suas músicas e álbuns.
-- Visualizar e gerenciar seus contratos e distribuição de receitas.
-- Interagir com ouvintes através da plataforma.
+### 4.4 Duração Média de Reprodução por Usuário
 
-### Para Ouvintes
+Calcula a duração média de reprodução por usuário.
 
-Como ouvinte na plataforma, você pode:
-- Explorar uma variedade de músicas de artistas independentes.
-- Criar listas de reprodução e seguir seus artistas favoritos.
-- Visualizar seu histórico de reprodução e descobrir novas recomendações musicais.
+```sql
+SELECT user.username, AVG(TIME_TO_SEC(music.duration)) AS average_play_duration
+FROM user
+JOIN streaming_history ON user.id = streaming_history.user_id
+JOIN music ON streaming_history.music_id = music.id
+GROUP BY user.username;
+```
 
-## Próximos Passos
+### 4.5 Número de Contratos Ativos por Artista
 
-- Implementar recursos adicionais com base no feedback do usuário.
-- Realizar testes extensivos para confiabilidade e desempenho.
-- Refinar consultas conforme necessário.
-- Considerar a implementação de recursos de segurança.
-- Planejar futuras melhorias e aprimoramentos.
+A consulta lista o número de contratos ativos para cada artista.
 
-## Contribuições
+```sql
+SELECT artist.stage_name, COUNT(contract.id) AS active_contracts
+FROM artist
 
-Sinta-se à vontade para contribuir para o projeto! Abra uma issue para sugestões, correções ou novos recursos.
+
+LEFT JOIN contract ON artist.id = contract.artist_id
+WHERE contract.end_date > CURDATE()
+GROUP BY artist.stage_name
+ORDER BY active_contracts DESC;
+```
+
+---
+
+**Conclusão**
+
+O IndieSoundHub oferece uma estrutura robusta para gerenciar e distribuir músicas de artistas independentes, proporcionando proteção aos direitos autorais por meio de contratos e informações específicas. O sistema é flexível, permitindo adaptações contínuas para acompanhar as mudanças no cenário da música independente.
