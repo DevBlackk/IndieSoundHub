@@ -260,3 +260,29 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+INSERT INTO user (username, email, password, user_type) VALUES
+('Alice123', 'alice@email.com', 'password123', 'Artist'),
+('Bob456', 'bob@email.com', 'pass456', 'Listener'),
+('Charlie789', 'charlie@email.com', 'securepass', 'Artist'),
+('David1', 'david@email.com', 'davidpass', 'Listener'),
+('Eva22', 'eva@email.com', 'evapass', 'Artist'),
+('Frank87', 'frank@email.com', 'frankpass', 'Listener'),
+('Grace34', 'grace@email.com', 'gracepass', 'Artist'),
+('Henry99', 'henry@email.com', 'henrypass', 'Listener'),
+('Isabel55', 'isabel@email.com', 'isabelpass', 'Artist'),
+('Jack66', 'jack@email.com', 'jackpass', 'Listener'),
+('Katie11', 'katie@email.com', 'katiepass', 'Artist'),
+('Leo78', 'leo@email.com', 'leopass', 'Listener'),
+('Mia44', 'mia@email.com', 'miapass', 'Artist'),
+('Noah77', 'noah@email.com', 'noahpass', 'Listener'),
+('Olivia88', 'olivia@email.com', 'oliviapass', 'Artist'),
+('Peter23', 'peter@email.com', 'peterpass', 'Listener'),
+('Quinn90', 'quinn@email.com', 'quinnpass', 'Artist'),
+('Ryan65', 'ryan@email.com', 'ryanpass', 'Listener'),
+('Sofia12', 'sofia@email.com', 'sofiapass', 'Artist'),
+('Tyler45', 'tyler@email.com', 'tylerpass', 'Listener'),
+('Uma56', 'uma@email.com', 'umapass', 'Artist'),
+('Vince32', 'vince@email.com', 'vincepass', 'Listener'),
+('Wendy21', 'wendy@email.com', 'wendypass', 'Artist'),
+('Xavier89', 'xavier@email.com', 'xavierpass', 'Listener'),
+('Yara76', 'yara@email.com', 'yarapass', 'Artist');
