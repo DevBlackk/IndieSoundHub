@@ -503,3 +503,32 @@ INSERT INTO streaming_service (service_name, subscribe_fee) VALUES
 ('SonicSculptor', 14.99),
 ('MelodicMuse', 10.99);
 
+-- CONSULTAS DE TABELAS NO BANCO DE DADOS
+
+SELECT music.title, COUNT(streaming_history.id) AS number_of_streams
+FROM music
+LEFT JOIN streaming_history ON music.id = streaming_history.music_id
+GROUP BY music.title;
+
+SELECT streaming_service.service_name, SUM(revenue_distribution.revenue_share_percentage * streaming_service.subscribe_fee) AS total_revenue
+FROM streaming_service
+LEFT JOIN revenue_distribution ON streaming_service.id = revenue_distribution.streaming_service_id
+GROUP BY streaming_service.service_name;
+
+SELECT user.username, music.title AS music_title, streaming_history.timestamp
+FROM user
+JOIN streaming_history ON user.id = streaming_history.user_id
+JOIN music ON streaming_history.music_id = music.id;
+
+SELECT user.username, AVG(TIME_TO_SEC(music.duration)) AS average_play_duration
+FROM user
+JOIN streaming_history ON user.id = streaming_history.user_id
+JOIN music ON streaming_history.music_id = music.id
+GROUP BY user.username;
+
+SELECT artist.stage_name, COUNT(contract.id) AS active_contracts
+FROM artist
+LEFT JOIN contract ON artist.id = contract.artist_id
+WHERE contract.end_date > CURDATE()
+GROUP BY artist.stage_name
+ORDER BY active_contracts DESC;
