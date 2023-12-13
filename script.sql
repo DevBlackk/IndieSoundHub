@@ -476,4 +476,30 @@ INSERT INTO streaming_history (user_id, music_id, timestamp) VALUES
 (24, 24, '2025-11-15 15:45:00'),
 (25, 26, '2026-01-01 19:20:00');
 
+INSERT INTO streaming_service (service_name, subscribe_fee) VALUES
+('MusicWave', 9.99),
+('SoundSculpt', 12.99),
+('GrooveHub', 8.99),
+('MelodyMinds', 14.99),
+('BeatBox', 10.99),
+('RhythmRealm', 11.99),
+('HarmonyHub', 13.99),
+('AudioVista', 9.49),
+('TuneTrance', 15.99),
+('SonicSculpture', 10.49),
+('MusicMingle', 11.49),
+('RiffRide', 14.49),
+('SymphonySync', 12.49),
+('BeatBlend', 9.99),
+('AudiophileAxis', 13.49),
+('SonicSurge', 11.99),
+('TuneTopia', 14.99),
+('SoundSphere', 10.99),
+('HarmonicHorizon', 12.99),
+('AuralAura', 13.99),
+('GrooveGarden', 8.49),
+('AudioAlchemy', 15.49),
+('RhythmRapture', 11.49),
+('SonicSculptor', 14.99),
+('MelodicMuse', 10.99);
 
