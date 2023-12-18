@@ -130,6 +130,9 @@ ORDER BY active_contracts DESC;
 
 O IndieSoundHub oferece uma estrutura robusta para gerenciar e distribuir músicas de artistas independentes, proporcionando proteção aos direitos autorais por meio de contratos e informações específicas. O sistema é flexível, permitindo adaptações contínuas para acompanhar as mudanças no cenário da música independente.
 
+## Apresentação do Projeto
+[Apresentação Visual](https://www.canva.com/design/DAF3SH4tL4Q/dPra9wmcKISZ4Nf41z5P_w/edit?utm_content=DAF3SH4tL4Q&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
 ## Diagrama do Projeto
 
 <img src="./img/Diagrama.png" alt="Diagrama" />
